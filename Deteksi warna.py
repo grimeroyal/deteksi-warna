@@ -2,14 +2,40 @@ import cv2
 import numpy as np
 import streamlit as st
 from PIL import Image
+from io import BytesIO
 
 st.title("Deteksi Warna dengan Area & Download")
 
-# Pilihan warna
+# Pilihan warna dasar
 warna_pilihan = st.radio(
-    "Pilih warna:",
+    "Pilih warna (preset):",
     ("Merah", "Biru", "Hijau", "Kuning")
 )
+
+# Preset HSV
+if warna_pilihan == "Merah":
+    lower_default = [0, 120, 70]
+    upper_default = [10, 255, 255]
+elif warna_pilihan == "Biru":
+    lower_default = [90, 50, 50]
+    upper_default = [130, 255, 255]
+elif warna_pilihan == "Hijau":
+    lower_default = [40, 40, 40]
+    upper_default = [80, 255, 255]
+elif warna_pilihan == "Kuning":
+    lower_default = [20, 100, 100]
+    upper_default = [30, 255, 255]
+
+st.subheader("Atur Range Warna (HSV)")
+
+# Slider HSV
+h_min = st.slider("Hue Min", 0, 179, lower_default[0])
+s_min = st.slider("Saturation Min", 0, 255, lower_default[1])
+v_min = st.slider("Value Min", 0, 255, lower_default[2])
+
+h_max = st.slider("Hue Max", 0, 179, upper_default[0])
+s_max = st.slider("Saturation Max", 0, 255, upper_default[1])
+v_max = st.slider("Value Max", 0, 255, upper_default[2])
 
 # Slider luas area
 min_area = st.slider("Minimal Luas Objek (px)", 50, 5000, 500, step=50)
@@ -25,28 +51,10 @@ if uploaded_file is not None:
     # Konversi ke HSV
     hsv = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2HSV)
 
-    # Range warna preset
-    if warna_pilihan == "Merah":
-        lower1 = np.array([0, 120, 70])
-        upper1 = np.array([10, 255, 255])
-        lower2 = np.array([160, 120, 70])
-        upper2 = np.array([180, 255, 255])
-        mask = cv2.inRange(hsv, lower1, upper1) | cv2.inRange(hsv, lower2, upper2)
-
-    elif warna_pilihan == "Biru":
-        lower = np.array([90, 50, 50])
-        upper = np.array([130, 255, 255])
-        mask = cv2.inRange(hsv, lower, upper)
-
-    elif warna_pilihan == "Hijau":
-        lower = np.array([40, 40, 40])
-        upper = np.array([80, 255, 255])
-        mask = cv2.inRange(hsv, lower, upper)
-
-    elif warna_pilihan == "Kuning":
-        lower = np.array([20, 100, 100])
-        upper = np.array([30, 255, 255])
-        mask = cv2.inRange(hsv, lower, upper)
+    # Mask pakai slider
+    lower = np.array([h_min, s_min, v_min])
+    upper = np.array([h_max, s_max, v_max])
+    mask = cv2.inRange(hsv, lower, upper)
 
     # Cari kontur
     contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
@@ -67,14 +75,11 @@ if uploaded_file is not None:
 
     # Tampilkan hasil
     st.image(img_result,
-             caption=f"Jumlah objek {warna_pilihan.lower()} terdeteksi: {count}")
+             caption=f"Jumlah objek terdeteksi: {count}")
 
-    st.success(f"Jumlah objek {warna_pilihan.lower()} terdeteksi: {count}")
+    st.success(f"Jumlah objek terdeteksi: {count}")
 
     # Tombol download hasil PNG
-    from io import BytesIO
-    import base64
-
     img_pil = Image.fromarray(img_result)
     buf = BytesIO()
     img_pil.save(buf, format="PNG")
