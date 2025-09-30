@@ -37,12 +37,22 @@ col1, col2 = st.columns([3, 2])
 
 with col1:
     h_min = st.slider("Hue Min", 0, 179, lower_default[0])
-    s_min = st.slider("Saturation Min", 0, 255, lower_default[1])
-    v_min = st.slider("Value Min", 0, 255, lower_default[2])
-
     h_max = st.slider("Hue Max", 0, 179, upper_default[0])
+    if h_min > h_max:
+        st.warning("⚠️ Hue Min tidak boleh lebih besar dari Hue Max")
+        h_min, h_max = h_max, h_min
+
+    s_min = st.slider("Saturation Min", 0, 255, lower_default[1])
     s_max = st.slider("Saturation Max", 0, 255, upper_default[1])
+    if s_min > s_max:
+        st.warning("⚠️ Saturation Min tidak boleh lebih besar dari Saturation Max")
+        s_min, s_max = s_max, s_min
+
+    v_min = st.slider("Value Min", 0, 255, lower_default[2])
     v_max = st.slider("Value Max", 0, 255, upper_default[2])
+    if v_min > v_max:
+        st.warning("⚠️ Value Min tidak boleh lebih besar dari Value Max")
+        v_min, v_max = v_max, v_min
 
 with col2:
     st.markdown("### Referensi HSV")
@@ -52,25 +62,6 @@ with col2:
 min_area = st.slider("Minimal Luas Objek (px)", 50, 5000, 500, step=50)
 
 uploaded_file = st.file_uploader("Upload Gambar", type=["jpg", "jpeg", "png"])
-
-# Slider HSV
-h_min = st.slider("Hue Min", 0, 179, lower_default[0])
-h_max = st.slider("Hue Max", 0, 179, upper_default[0])
-if h_min > h_max:
-    st.warning("⚠️ Hue Min tidak boleh lebih besar dari Hue Max")
-    h_min, h_max = h_max, h_min  # tukar agar valid
-
-s_min = st.slider("Saturation Min", 0, 255, lower_default[1])
-s_max = st.slider("Saturation Max", 0, 255, upper_default[1])
-if s_min > s_max:
-    st.warning("⚠️ Saturation Min tidak boleh lebih besar dari Saturation Max")
-    s_min, s_max = s_max, s_min
-
-v_min = st.slider("Value Min", 0, 255, lower_default[2])
-v_max = st.slider("Value Max", 0, 255, upper_default[2])
-if v_min > v_max:
-    st.warning("⚠️ Value Min tidak boleh lebih besar dari Value Max")
-    v_min, v_max = v_max, v_min
 
 if uploaded_file is not None:
     # Baca gambar
@@ -103,9 +94,14 @@ if uploaded_file is not None:
     # Konversi ke RGB untuk tampil & download
     img_result = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2RGB)
 
-    # Tampilkan hasil
-    st.image(img_result,
-             caption=f"Jumlah objek terdeteksi: {count}")
+    # Layout hasil dan mask
+    st.subheader("Hasil Deteksi")
+    col1, col2 = st.columns(2)
+
+    with col1:
+        st.image(img_result, caption=f"Jumlah objek terdeteksi: {count}")
+    with col2:
+        st.image(mask, caption="Mask (area terdeteksi)", clamp=True)
 
     st.success(f"Jumlah objek terdeteksi: {count}")
 
@@ -121,4 +117,3 @@ if uploaded_file is not None:
         file_name=f"hasil_deteksi_{warna_pilihan.lower()}.png",
         mime="image/png"
     )
-
