@@ -6,33 +6,29 @@ from io import BytesIO
 
 st.title("Deteksi Warna dengan Area, Range HSV & Download")
 
-# Pilihan warna preset
+# Pilihan warna preset (untuk inisialisasi slider)
 warna_pilihan = st.radio(
-    "Pilih warna (preset):",
+    "Pilih warna (preset awal slider):",
     ("Merah", "Biru", "Hijau", "Kuning")
 )
 
-# Preset HSV
+# Preset HSV sesuai pilihan awal slider
 if warna_pilihan == "Merah":
     lower_default = [0, 120, 70]
     upper_default = [10, 255, 255]
-    referensi = "Merah ≈ Hue 0–10 & 160–180, S:120–255, V:70–255"
 elif warna_pilihan == "Biru":
     lower_default = [90, 50, 50]
     upper_default = [130, 255, 255]
-    referensi = "Biru ≈ Hue 90–130, S:50–255, V:50–255"
 elif warna_pilihan == "Hijau":
     lower_default = [40, 40, 40]
     upper_default = [80, 255, 255]
-    referensi = "Hijau ≈ Hue 40–80, S:40–255, V:40–255"
 elif warna_pilihan == "Kuning":
     lower_default = [20, 100, 100]
     upper_default = [30, 255, 255]
-    referensi = "Kuning ≈ Hue 20–30, S:100–255, V:100–255"
 
 st.subheader("Atur Range Warna (HSV)")
 
-# Layout 2 kolom: slider di kiri, referensi di kanan
+# Layout 2 kolom: slider di kiri, referensi semua warna di kanan
 col1, col2 = st.columns([3, 2])
 
 with col1:
@@ -41,8 +37,11 @@ with col1:
     v_min, v_max = st.slider("Value Range", 0, 255, (lower_default[2], upper_default[2]))
 
 with col2:
-    st.markdown("### Referensi HSV")
-    st.info(referensi)
+    st.markdown("### Referensi HSV Semua Warna")
+    st.info("**Merah**: Hue 0–10 & 160–180, S:120–255, V:70–255")
+    st.info("**Biru**: Hue 90–130, S:50–255, V:50–255")
+    st.info("**Hijau**: Hue 40–80, S:40–255, V:40–255")
+    st.info("**Kuning**: Hue 20–30, S:100–255, V:100–255")
 
 # Slider luas area
 min_area = st.slider("Minimal Luas Objek (px)", 50, 5000, 500, step=50)
@@ -100,6 +99,6 @@ if uploaded_file is not None:
     st.download_button(
         label="Download Hasil Deteksi (PNG)",
         data=byte_im,
-        file_name=f"hasil_deteksi_{warna_pilihan.lower()}.png",
+        file_name=f"hasil_deteksi.png",
         mime="image/png"
     )
