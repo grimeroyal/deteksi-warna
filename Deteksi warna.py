@@ -52,13 +52,11 @@ with col1:
 
 with col2:
     st.markdown("### Referensi HSV Semua Warna")
-    st.markdown("""
-        Warna Hue Sat Val
-        Merah 0–10,160–180 120–255 70–255
-        Biru 90–130 50–255 50–255
-        Hijau 40–80 40–255 40–255
-        Kuning 20–30 100–255 100–255
-    """)
+    st.info("**Merah**:\nHue: 0–10 & 160–180\nSat: 120–255\nVal: 70–255")
+    st.info("**Biru**:\nHue: 90–130\nSat: 50–255\nVal: 50–255")
+    st.info("**Hijau**:\nHue: 40–80\nSat: 40–255\nVal: 40–255")
+    st.info("**Kuning**:\nHue: 20–30\nSat: 100–255\nVal: 100–255")
+
 
 # Ambil nilai slider terbaru dari session_state
 h_min, h_max = st.session_state.h_range
@@ -115,3 +113,4 @@ if uploaded_file is not None:
         file_name=f"hasil_deteksi.png",
         mime="image/png"
     )
+
