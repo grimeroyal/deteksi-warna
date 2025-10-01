@@ -26,29 +26,34 @@ with col1:
     v_min, v_max = st.slider("Value Range", 0, 255, st.session_state.v_range, key="v_range_slider")
 
     # Radio button preset warna
-    st.subheader("Preset Cepat")
-    warna_pilihan = st.radio(
+        st.subheader("Preset Cepat")
+
+    def set_preset():
+        warna = st.session_state.warna_preset
+        if warna == "Merah":
+            st.session_state.h_range = (0, 10)
+            st.session_state.s_range = (120, 255)
+            st.session_state.v_range = (70, 255)
+        elif warna == "Biru":
+            st.session_state.h_range = (90, 130)
+            st.session_state.s_range = (50, 255)
+            st.session_state.v_range = (50, 255)
+        elif warna == "Hijau":
+            st.session_state.h_range = (40, 80)
+            st.session_state.s_range = (40, 255)
+            st.session_state.v_range = (40, 255)
+        elif warna == "Kuning":
+            st.session_state.h_range = (20, 30)
+            st.session_state.s_range = (100, 255)
+            st.session_state.v_range = (100, 255)
+
+    st.radio(
         "Pilih preset warna:",
-        ("Merah", "Biru", "Hijau", "Kuning")
+        ("Merah", "Biru", "Hijau", "Kuning"),
+        key="warna_preset",
+        on_change=set_preset
     )
 
-    # Update slider sesuai preset
-    if warna_pilihan == "Merah":
-        st.session_state.h_range = (0, 10)
-        st.session_state.s_range = (120, 255)
-        st.session_state.v_range = (70, 255)
-    elif warna_pilihan == "Biru":
-        st.session_state.h_range = (90, 130)
-        st.session_state.s_range = (50, 255)
-        st.session_state.v_range = (50, 255)
-    elif warna_pilihan == "Hijau":
-        st.session_state.h_range = (40, 80)
-        st.session_state.s_range = (40, 255)
-        st.session_state.v_range = (40, 255)
-    elif warna_pilihan == "Kuning":
-        st.session_state.h_range = (20, 30)
-        st.session_state.s_range = (100, 255)
-        st.session_state.v_range = (100, 255)
 
 with col2:
     st.markdown("### Referensi HSV Semua Warna")
@@ -113,4 +118,5 @@ if uploaded_file is not None:
         file_name=f"hasil_deteksi.png",
         mime="image/png"
     )
+
 
