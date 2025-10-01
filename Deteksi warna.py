@@ -37,9 +37,9 @@ with col1:
     v_min, v_max = st.slider("Value Range", 0, 255, (lower_default[2], upper_default[2]))
 
 with col2:
-st.markdown("### Referensi HSV Semua Warna")
+    st.markdown("### Referensi HSV Semua Warna")
 
-col1, col2, col3, col4 = st.columns(4)
+    col1, col2, col3, col4 = st.columns(4)
 
 with col1:
     st.markdown("**Merah:**")
@@ -117,4 +117,5 @@ if uploaded_file is not None:
         file_name=f"hasil_deteksi.png",
         mime="image/png"
     )
+
 
