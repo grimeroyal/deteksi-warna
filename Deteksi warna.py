@@ -39,14 +39,12 @@ with col1:
 
 with col2:
     st.markdown("### Referensi HSV Semua Warna")
-
     st.markdown("""
-    | Warna  | Hu------------| Saturation   | Valu-------|
-    |--------|---------------|--------------|------------|
-    | Merah  | 0–10, 160–180 | 120–255      | 70–255     |
-    | Biru   | 90–130        | 50–255       | 50–255     |
-    | Hijau  | 40–80         | 40–255       | 40–255     |
-    | Kuning | 20–30         | 100–255      | 100–255    |
+        Warna Hue Sat Val
+        Merah 0–10,160–180 120–255 70–255
+        Biru 90–130 50–255 50–255
+        Hijau 40–80 40–255 40–255
+        Kuning 20–30 100–255 100–255
     """)
 
 # Slider luas area
@@ -108,12 +106,3 @@ if uploaded_file is not None:
         file_name=f"hasil_deteksi.png",
         mime="image/png"
     )
-
-
-
-
-
-
-
-
-
