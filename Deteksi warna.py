@@ -26,7 +26,7 @@ with col1:
     v_min, v_max = st.slider("Value Range", 0, 255, st.session_state.v_range, key="v_range_slider")
 
     # Radio button preset warna
-        st.subheader("Preset Cepat")
+    st.subheader("Preset Cepat")
 
     def set_preset():
         warna = st.session_state.warna_preset
@@ -118,5 +118,6 @@ if uploaded_file is not None:
         file_name=f"hasil_deteksi.png",
         mime="image/png"
     )
+
 
 
