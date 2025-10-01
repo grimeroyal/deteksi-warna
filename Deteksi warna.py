@@ -1,6 +1,7 @@
 import cv2
 import numpy as np
 import streamlit as st
+import pandas as pd
 from PIL import Image
 from io import BytesIO
 
@@ -39,14 +40,15 @@ with col1:
 with col2:
     st.markdown("### Referensi HSV Semua Warna")
 
-    st.markdown("""
-    | Warna  | Hue           | Saturation   | Value      |
-    |--------|---------------|--------------|------------|
-    | Merah  | 0–10, 160–180 | 120–255      | 70–255     |
-    | Biru   | 90–130        | 50–255       | 50–255     |
-    | Hijau  | 40–80         | 40–255       | 40–255     |
-    | Kuning | 20–30         | 100–255      | 100–255    |
-    """)
+    data = {
+        "Warna": ["Merah", "Biru", "Hijau", "Kuning"],
+        "Hue": ["0–10, 160–180", "90–130", "40–80", "20–30"],
+        "Saturation": ["120–255", "50–255", "40–255", "100–255"],
+        "Value": ["70–255", "50–255", "40–255", "100–255"]
+    }
+
+    df = pd.DataFrame(data)
+    st.table(df)
 
 
 
@@ -109,6 +111,7 @@ if uploaded_file is not None:
         file_name=f"hasil_deteksi.png",
         mime="image/png"
     )
+
 
 
 
