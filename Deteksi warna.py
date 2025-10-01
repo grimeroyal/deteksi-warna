@@ -41,7 +41,7 @@ with col2:
     st.markdown("### Referensi HSV Semua Warna")
 
     st.markdown("""
-    | Warna  | Hueeeeeeeeeeee| Saturation   | Valueeeeeee|
+    | Warna  | Hu------------| Saturation   | Valu-------|
     |--------|---------------|--------------|------------|
     | Merah  | 0–10, 160–180 | 120–255      | 70–255     |
     | Biru   | 90–130        | 50–255       | 50–255     |
@@ -108,6 +108,7 @@ if uploaded_file is not None:
         file_name=f"hasil_deteksi.png",
         mime="image/png"
     )
+
 
 
 
