@@ -7,35 +7,16 @@ from io import BytesIO
 
 st.title("Deteksi Warna dengan Area, Range HSV & Download")
 
-# Pilihan warna preset (untuk inisialisasi slider)
-warna_pilihan = st.radio(
-    "Pilih warna (preset awal slider):",
-    ("Merah", "Biru", "Hijau", "Kuning")
-)
-
-# Preset HSV sesuai pilihan awal slider
-if warna_pilihan == "Merah":
-    lower_default = [0, 120, 70]
-    upper_default = [10, 255, 255]
-elif warna_pilihan == "Biru":
-    lower_default = [90, 50, 50]
-    upper_default = [130, 255, 255]
-elif warna_pilihan == "Hijau":
-    lower_default = [40, 40, 40]
-    upper_default = [80, 255, 255]
-elif warna_pilihan == "Kuning":
-    lower_default = [20, 100, 100]
-    upper_default = [30, 255, 255]
-
 st.subheader("Atur Range Warna (HSV)")
 
 # Layout 2 kolom: slider di kiri, referensi semua warna di kanan
 col1, col2 = st.columns([3, 2])
 
 with col1:
-    h_min, h_max = st.slider("Hue Range", 0, 179, (lower_default[0], upper_default[0]))
-    s_min, s_max = st.slider("Saturation Range", 0, 255, (lower_default[1], upper_default[1]))
-    v_min, v_max = st.slider("Value Range", 0, 255, (lower_default[2], upper_default[2]))
+    # Default nilai HSV (pakai Merah biar ada nilai awal)
+    h_min, h_max = st.slider("Hue Range", 0, 179, (0, 10))
+    s_min, s_max = st.slider("Saturation Range", 0, 255, (120, 255))
+    v_min, v_max = st.slider("Value Range", 0, 255, (70, 255))
 
 with col2:
     st.markdown("### Referensi HSV Semua Warna")
@@ -44,6 +25,30 @@ with col2:
     st.info("**Hijau**: Hue 40–80, S:40–255, V:40–255")
     st.info("**Kuning**: Hue 20–30, S:100–255, V:100–255")
 
+# Radio button preset warna dipindahkan ke bawah slider
+st.subheader("Preset Cepat")
+warna_pilihan = st.radio(
+    "Pilih preset warna untuk reset slider:",
+    ("Merah", "Biru", "Hijau", "Kuning")
+)
+
+# Atur ulang slider sesuai pilihan preset
+if warna_pilihan == "Merah":
+    h_min, h_max = 0, 10
+    s_min, s_max = 120, 255
+    v_min, v_max = 70, 255
+elif warna_pilihan == "Biru":
+    h_min, h_max = 90, 130
+    s_min, s_max = 50, 255
+    v_min, v_max = 50, 255
+elif warna_pilihan == "Hijau":
+    h_min, h_max = 40, 80
+    s_min, s_max = 40, 255
+    v_min, v_max = 40, 255
+elif warna_pilihan == "Kuning":
+    h_min, h_max = 20, 30
+    s_min, s_max = 100, 255
+    v_min, v_max = 100, 255
 
 # Slider luas area
 min_area = st.slider("Minimal Luas Objek (px)", 50, 5000, 500, step=50)
@@ -59,7 +64,7 @@ if uploaded_file is not None:
     # Konversi ke HSV
     hsv = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2HSV)
 
-    # Mask pakai slider
+    # Mask pakai slider/preset
     lower = np.array([h_min, s_min, v_min])
     upper = np.array([h_max, s_max, v_max])
     mask = cv2.inRange(hsv, lower, upper)
@@ -104,4 +109,3 @@ if uploaded_file is not None:
         file_name=f"hasil_deteksi.png",
         mime="image/png"
     )
-
