@@ -39,13 +39,11 @@ with col1:
 
 with col2:
     st.markdown("### Referensi HSV Semua Warna")
-    st.markdown("""
-        Warna Hue Sat Val
-        Merah 0–10,160–180 120–255 70–255
-        Biru 90–130 50–255 50–255
-        Hijau 40–80 40–255 40–255
-        Kuning 20–30 100–255 100–255
-    """)
+    st.info("**Merah**: Hue 0–10 & 160–180, S:120–255, V:70–255")
+    st.info("**Biru**: Hue 90–130, S:50–255, V:50–255")
+    st.info("**Hijau**: Hue 40–80, S:40–255, V:40–255")
+    st.info("**Kuning**: Hue 20–30, S:100–255, V:100–255")
+
 
 # Slider luas area
 min_area = st.slider("Minimal Luas Objek (px)", 50, 5000, 500, step=50)
@@ -106,3 +104,4 @@ if uploaded_file is not None:
         file_name=f"hasil_deteksi.png",
         mime="image/png"
     )
+
