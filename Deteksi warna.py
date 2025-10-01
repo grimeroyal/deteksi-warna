@@ -37,11 +37,26 @@ with col1:
     v_min, v_max = st.slider("Value Range", 0, 255, (lower_default[2], upper_default[2]))
 
 with col2:
-    st.markdown("### Referensi HSV Semua Warna")
-    st.info("**Merah**: Hue 0–10 & 160–180, S:120–255, V:70–255")
-    st.info("**Biru**: Hue 90–130, S:50–255, V:50–255")
-    st.info("**Hijau**: Hue 40–80, S:40–255, V:40–255")
-    st.info("**Kuning**: Hue 20–30, S:100–255, V:100–255")
+st.markdown("### Referensi HSV Semua Warna")
+
+col1, col2, col3, col4 = st.columns(4)
+
+with col1:
+    st.markdown("**Merah:**")
+    st.text("Hue : 0–10\n       160–180\nSat : 120–255\nVal : 70–255")
+
+with col2:
+    st.markdown("**Biru:**")
+    st.text("Hue : 90–130\nSat : 50–255\nVal : 50–255")
+
+with col3:
+    st.markdown("**Hijau:**")
+    st.text("Hue : 40–80\nSat : 40–255\nVal : 40–255")
+
+with col4:
+    st.markdown("**Kuning:**")
+    st.text("Hue : 20–30\nSat : 100–255\nVal : 100–255")
+
 
 # Slider luas area
 min_area = st.slider("Minimal Luas Objek (px)", 50, 5000, 500, step=50)
@@ -102,3 +117,4 @@ if uploaded_file is not None:
         file_name=f"hasil_deteksi.png",
         mime="image/png"
     )
+
