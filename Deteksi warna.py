@@ -40,15 +40,30 @@ with col1:
 with col2:
     st.markdown("### Referensi HSV Semua Warna")
 
-    data = {
-        "Warna": ["Merah", "Biru", "Hijau", "Kuning"],
-        "Hue": ["0–10, 160–180", "90–130", "40–80", "20–30"],
-        "Saturation": ["120–255", "50–255", "40–255", "100–255"],
-        "Value": ["70–255", "50–255", "40–255", "100–255"]
-    }
+    st.markdown("""
+    <pre>
+    Merah :
+      Hue : 0–10 dan 160–180
+      Sat : 120–255
+      Val : 70–255
 
-    df = pd.DataFrame(data)
-    st.table(df)
+    Biru :
+      Hue : 90–130
+      Sat : 50–255
+      Val : 50–255
+
+    Hijau :
+      Hue : 40–80
+      Sat : 40–255
+      Val : 40–255
+
+    Kuning :
+      Hue : 20–30
+      Sat : 100–255
+      Val : 100–255
+    </pre>
+    """, unsafe_allow_html=True)
+
 
 
 
@@ -111,6 +126,7 @@ if uploaded_file is not None:
         file_name=f"hasil_deteksi.png",
         mime="image/png"
     )
+
 
 
 
