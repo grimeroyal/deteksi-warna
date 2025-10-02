@@ -20,15 +20,11 @@ with col1:
     if "v_range" not in st.session_state:
         st.session_state.v_range = (70, 255)
 
-    # Slider HSV (pakai session_state)
+    # Slider HSV (ambil dari session_state, tapi biarkan Streamlit yang update)
     h_min, h_max = st.slider("Hue Range", 0, 179, value=st.session_state.h_range, key="h_range_slider")
     s_min, s_max = st.slider("Saturation Range", 0, 255, value=st.session_state.s_range, key="s_range_slider")
     v_min, v_max = st.slider("Value Range", 0, 255, value=st.session_state.v_range, key="v_range_slider")
 
-    # Update session_state biar slider ↔ radio sinkron
-    st.session_state.h_range = (h_min, h_max)
-    st.session_state.s_range = (s_min, s_max)
-    st.session_state.v_range = (v_min, v_max)
 
     # Radio button preset warna
     st.subheader("Preset Cepat")
@@ -137,3 +133,4 @@ if uploaded_file is not None:
         file_name="hasil_mask.png",
         mime="image/png"
     )
+
