@@ -20,11 +20,10 @@ with col1:
     if "v_range" not in st.session_state:
         st.session_state.v_range = (70, 255)
 
-    # Slider HSV (ambil dari session_state, tapi biarkan Streamlit yang update)
+    # Slider HSV (pakai session_state untuk default value)
     h_min, h_max = st.slider("Hue Range", 0, 179, value=st.session_state.h_range, key="h_range_slider")
     s_min, s_max = st.slider("Saturation Range", 0, 255, value=st.session_state.s_range, key="s_range_slider")
     v_min, v_max = st.slider("Value Range", 0, 255, value=st.session_state.v_range, key="v_range_slider")
-
 
     # Radio button preset warna
     st.subheader("Preset Cepat")
@@ -62,14 +61,15 @@ with col2:
     st.info("**Hijau**:\nHue: 40–80\nSat: 40–255\nVal: 40–255")
     st.info("**Kuning**:\nHue: 20–30\nSat: 100–255\nVal: 100–255")
 
-# Ambil nilai slider terbaru dari session_state
-h_min, h_max = st.session_state.h_range
-s_min, s_max = st.session_state.s_range
-v_min, v_max = st.session_state.v_range
+# Ambil nilai slider terbaru (update otomatis dari Streamlit)
+h_min, h_max = h_min, h_max
+s_min, s_max = s_min, s_max
+v_min, v_max = v_min, v_max
 
 # Slider luas area
 min_area = st.slider("Minimal Luas Objek (px)", 50, 5000, 500, step=50)
 
+# Upload gambar
 uploaded_file = st.file_uploader("Upload Gambar", type=["jpg", "jpeg", "png"])
 
 if uploaded_file is not None:
@@ -133,4 +133,3 @@ if uploaded_file is not None:
         file_name="hasil_mask.png",
         mime="image/png"
     )
-
