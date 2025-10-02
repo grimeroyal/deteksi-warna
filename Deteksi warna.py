@@ -24,7 +24,8 @@ with col1:
     h_min, h_max = st.slider("Hue Range", 0, 179, value=st.session_state.h_range, key="h_range_slider")
     s_min, s_max = st.slider("Saturation Range", 0, 255, value=st.session_state.s_range, key="s_range_slider")
     v_min, v_max = st.slider("Value Range", 0, 255, value=st.session_state.v_range, key="v_range_slider")
-    
+
+    # Update session_state biar slider ↔ radio sinkron
     st.session_state.h_range = (h_min, h_max)
     st.session_state.s_range = (s_min, s_max)
     st.session_state.v_range = (v_min, v_max)
@@ -110,16 +111,29 @@ if uploaded_file is not None:
 
     st.success(f"Jumlah objek terdeteksi: {count}")
 
-    img_pil = Image.fromarray(img_result)
-    buf = BytesIO()
-    img_pil.save(buf, format="PNG")
-    byte_im = buf.getvalue()
+    # --- Download hasil dengan marker ---
+    img_pil_result = Image.fromarray(img_result)
+    buf1 = BytesIO()
+    img_pil_result.save(buf1, format="PNG")
+    byte_result = buf1.getvalue()
 
+    # --- Download hasil mask ---
+    img_pil_mask = Image.fromarray(mask_filtered)
+    buf2 = BytesIO()
+    img_pil_mask.save(buf2, format="PNG")
+    byte_mask = buf2.getvalue()
+
+    # Tombol download
     st.download_button(
-        label="Download Hasil Deteksi (PNG)",
-        data=byte_im,
-        file_name=f"hasil_deteksi.png",
+        label="Download Hasil Deteksi (Marker)",
+        data=byte_result,
+        file_name="hasil_deteksi_marker.png",
         mime="image/png"
     )
 
-
+    st.download_button(
+        label="Download Hasil Mask (Hitam Putih)",
+        data=byte_mask,
+        file_name="hasil_mask.png",
+        mime="image/png"
+    )
