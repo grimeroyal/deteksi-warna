@@ -24,7 +24,10 @@ with col1:
     h_min, h_max = st.slider("Hue Range", 0, 179, value=st.session_state.h_range, key="h_range_slider")
     s_min, s_max = st.slider("Saturation Range", 0, 255, value=st.session_state.s_range, key="s_range_slider")
     v_min, v_max = st.slider("Value Range", 0, 255, value=st.session_state.v_range, key="v_range_slider")
-
+    
+    st.session_state.h_range = (h_min, h_max)
+    st.session_state.s_range = (s_min, s_max)
+    st.session_state.v_range = (v_min, v_max)
 
     # Radio button preset warna
     st.subheader("Preset Cepat")
@@ -118,4 +121,5 @@ if uploaded_file is not None:
         file_name=f"hasil_deteksi.png",
         mime="image/png"
     )
+
 
