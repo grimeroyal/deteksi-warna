@@ -54,14 +54,12 @@ with col1:
         on_change=set_preset
     )
 
-
 with col2:
     st.markdown("### Referensi HSV Semua Warna")
     st.info("**Merah**:\nHue: 0–10 & 160–180\nSat: 120–255\nVal: 70–255")
     st.info("**Biru**:\nHue: 90–130\nSat: 50–255\nVal: 50–255")
     st.info("**Hijau**:\nHue: 40–80\nSat: 40–255\nVal: 40–255")
     st.info("**Kuning**:\nHue: 20–30\nSat: 100–255\nVal: 100–255")
-
 
 # Ambil nilai slider terbaru dari session_state
 h_min, h_max = st.session_state.h_range
@@ -80,27 +78,31 @@ if uploaded_file is not None:
 
     hsv = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2HSV)
 
-    # Mask pakai slider/preset
-    lower = np.array([h_min, s_min, v_min])
-    upper = np.array([h_max, s_max, v_max])
-    mask = cv2.inRange(hsv, lower, upper)
-
+    # Mask awal
+    mask = cv2.inRange(hsv, np.array([h_min, s_min, v_min]), np.array([h_max, s_max, v_max]))
     contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+
+    # Mask baru sesuai filter area
+    mask_filtered = np.zeros_like(mask)
 
     count = 0
     for c in contours:
         area = cv2.contourArea(c)
         if area > min_area:
             count += 1
+            # Boundary hitam + lingkaran hijau di citra asli
             cv2.drawContours(img_bgr, [c], -1, (0, 0, 0), 5)
             (x, y), radius = cv2.minEnclosingCircle(c)
             cv2.circle(img_bgr, (int(x), int(y)), int(radius), (0, 255, 0), 5)
+
+            # Tambahkan ke mask hasil filter
+            cv2.drawContours(mask_filtered, [c], -1, 255, -1)
 
     img_result = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2RGB)
 
     st.subheader("Hasil Deteksi")
     st.image(img_result, caption=f"Jumlah objek terdeteksi: {count}")
-    st.image(mask, caption="Mask (area terdeteksi)", clamp=True)
+    st.image(mask_filtered, caption="Mask (area terdeteksi)", clamp=True)
 
     st.success(f"Jumlah objek terdeteksi: {count}")
 
@@ -115,7 +117,3 @@ if uploaded_file is not None:
         file_name=f"hasil_deteksi.png",
         mime="image/png"
     )
-
-
-
-
