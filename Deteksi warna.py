@@ -99,11 +99,8 @@ if uploaded_file is not None:
     img_result = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2RGB)
 
     st.subheader("Hasil Deteksi")
-    col1, col2 = st.columns(2)
-    with col1:
-        st.image(img_result, caption=f"Jumlah objek terdeteksi: {count}")
-    with col2:
-        st.image(mask, caption="Mask (area terdeteksi)", clamp=True)
+    st.image(img_result, caption=f"Jumlah objek terdeteksi: {count}")
+    st.image(mask, caption="Mask (area terdeteksi)", clamp=True)
 
     st.success(f"Jumlah objek terdeteksi: {count}")
 
@@ -118,6 +115,7 @@ if uploaded_file is not None:
         file_name=f"hasil_deteksi.png",
         mime="image/png"
     )
+
 
 
 
